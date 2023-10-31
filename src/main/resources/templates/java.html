@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- head 부분 스타일 및 설정 -->
+</head>
+<style>
+.pagination {
+	margin-top: 20px; /* 테이블 아래 여백 조정 */
+	text-align: center; /* 가운데 정렬 */
+}
+
+.pagination a {
+	color: red; /* 텍스트 색상을 빨간색으로 설정 */
+	text-decoration: none; /* 밑줄 제거 */
+	padding: 10px 10px; /* 텍스트 주변 여백 추가 */
+	border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+	background-color: rgba(173, 216, 230, 0.5); /* 배경 색상 설정 */
+	transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 추가 */
+	margin-bottom: 30px;
+}
+
+.pagination a:hover {
+	color: white; /* 호버 시 텍스트 색상 변경 */
+	background-color: red; /* 호버 시 배경 색상 변경 */
+	transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+/* 그리드 스타일 설정 */
+ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 열로 정렬 */
+    grid-gap: 20px; /* 열 간격 설정 */
+    list-style: none;
+}
+
+li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+li img {
+   max-width: 100%; /* 이미지의 최대 너비를 부모 요소에 맞게 조정 */
+   max-height: 100%; /* 이미지의 최대 높이를 부모 요소에 맞게 조정 */
+}
+/* 제품 스타일 설정 */
+.product {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.product img {
+    max-width: 100%; /* 이미지의 최대 너비를 부모 요소에 맞게 조정 */
+    max-height: 100%; /* 이미지의 최대 높이를 부모 요소에 맞게 조정 */
+}
+</style>
+<body>
+    <div
+		th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
+	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+    <h1>Online Store</h1>
+  
+    <div>
+    <ul>
+        <li th:each="item, iterStat : ${list}">
+            <!-- provider, title, date를 가져와서 표시 -->
+          
+                <!-- 썸네일 이미지를 표시 -->
+                <img th:src="'/' + ${item.img}" alt="썸네일 이미지"><br>
+                <a th:href="@{/my/productDetail/{productId}(productId=${item.itemcount})}">제품 세부 정보 보기</a>
+                <p th:text="'Provider: ' + ${item.provider}"></p>
+                <p th:text="'Title: ' + ${item.title}"></p>
+                <p th:text="'Date: ' + ${item.date}"></p>
+           
+        </li>
+        
+    </ul>
+    <div class="pagination">
+    <span th:if="${reviewPage.hasPrevious()}">
+        <a th:href="@{'/my/java?page=' + ${reviewPageNumber - 1}}">이전</a>
+    </span>
+    <span th:each="pageNumber : ${#numbers.sequence(1, reviewPage.totalPages)}">
+        <a th:href="@{'/my/java?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>
+    </span>
+    <span th:if="${reviewPage.hasNext()}">
+        <a th:href="@{'/my/java?page=' + ${reviewPageNumber + 1}}">다음</a>
+    </span>
+</div>
+
+    <a th:href="@{/my/addProduct}" style="display: block; margin-top: 20px;">상품 등록하러 가기</a>
+</body>
+</html>
