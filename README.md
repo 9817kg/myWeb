@@ -27,4 +27,5 @@
 - **language**: JavaScript, HTML/CSS
 - **skill**: AJAX, Thymeleaf
 
-[인터넷 강의 구매사이트 프로젝트 💨](링크)
+[포트폴리오 보러가기 💨](https://github.com/9817kg/portfolio)
+
