@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<title>상세 페이지</title>
+<style>
+.pagination {
+	margin-top: 20px; /* 테이블 아래 여백 조정 */
+	text-align: center; /* 가운데 정렬 */
+}
+
+.pagination a {
+	color: red; /* 텍스트 색상을 빨간색으로 설정 */
+	text-decoration: none; /* 밑줄 제거 */
+	padding: 10px 10px; /* 텍스트 주변 여백 추가 */
+	border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+	background-color: rgba(173, 216, 230, 0.5); /* 배경 색상 설정 */
+	transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 추가 */
+	margin-bottom: 30px;
+}
+
+.pagination a:hover {
+	color: white; /* 호버 시 텍스트 색상 변경 */
+	background-color: red; /* 호버 시 배경 색상 변경 */
+	transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 추가 */
+}
+/* Details 섹션 스타일링 */
+.reviewWrapp ul {
+	list-style: none; /* 불릿을 없애줍니다. */
+	padding: 10px 0;
+}
+
+.reviewWrapp li {
+	border-bottom: 1px solid #ddd; /* 각 <li> 요소의 하단에 밑줄을 추가합니다. */
+}
+
+.details {
+	margin-bottom: 20px;
+	margin-left: 80px;
+}
+
+h2 {
+	margin-top: 160px;
+}
+
+.details h3 {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 5px;
+	cursor: pointer;
+}
+
+/* Description 섹션 스타일링 */
+.description h3 {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 5px;
+	cursor: pointer;
+}
+
+/* Size + Fit 섹션 스타일링 */
+.size-fit h3 {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 5px;
+	cursor: pointer;
+}
+/* 제출 버튼 스타일링 */
+.submit-button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	max-height: 38px;
+}
+
+/* 제출 버튼 호버 효과 */
+.submit-button:hover {
+	background-color: #0056b3;
+}
+
+/* 버튼 공통 스타일 */
+.buttons button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* 버튼 호버 효과 */
+.buttons button:hover {
+	background-color: #0056b3;
+}
+
+/* 첫 번째 버튼 스타일 */
+.buttons button:nth-child(1) {
+	background-color: #28a745;
+}
+
+/* 첫 번째 버튼 호버 효과 */
+.buttons button:nth-child(1):hover {
+	background-color: #1e7e34;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+}
+
+.wrap {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.img img {
+	width: 500px;
+	height: auto;
+	margin-top: 100px;
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+.info {
+	margin-left: 80px;
+}
+
+.title {
+	font-size: 36px;
+	font-weight: bold;
+}
+
+.reviewWrapp {
+	width: 100%;
+}
+</style>
+</head>
+<body>
+
+	<div
+		th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
+	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+	<div class="wrap" th:if="${product}">
+
+		<div class="img">
+
+			<img th:src="'/' + ${product.img}" alt="썸네일 이미지">
+		</div>
+
+
+
+		<!-- 우측 설명 영역 -->
+		<div class="details">
+			<form action="/my/cart" method="post">
+				<!-- 제품 상세 정보 -->
+				<h2 th:text="${product.title}"></h2>
+				<p th:text="${product.price}"></p>
+				<!-- Details 섹션 -->
+				<h3 onclick="toggleSection('details-section')">Description</h3>
+				<div id="details-section" style="display: none;">
+					<p th:text="${product.description}"></p>
+				</div>
+				<h3 onclick="toggleSection('provider-section')">Provider</h3>
+				<div id="provider-section" style="display: none;">
+				<input type="hidden" name="name" th:value="${product.provider}">
+					<a th:href="@{/info/teacherInfo/{teacher}(teacher=${product.provider})}" th:text="${product.provider}" ></a>
+				</div>
+				<!-- Size + Fit 섹션 -->
+				<h3 onclick="toggleSection('category-section')">category</h3>
+				<div id="category-section" style="display: none;">
+					<p th:text="${product.category}"></p>
+				</div>
+				<!-- Buy Now와 Add to Cart 버튼 -->
+				<div class="buttons">
+					<button>Buy Now</button>
+					<button type="submit" th:value="${product.itemcount}"
+						name="product">cart</button>
+				</div>
+			</form>
+
+
+		</div>
+
+
+		<div th:if="${reviews}" class="reviewWrapp">
+
+
+			<!-- 페이지 번호에 따라 리뷰를 표시 -->
+			<h2 style="border-bottom: 1px solid #ddd;">수강후기</h2>
+			<ul>
+				<li th:each="review, iterStat : ${reviewPage.content}">
+
+					<h3 data-toggle="review-content-${iterStat.count}"
+						class="review-title" th:text="${review.title}"></h3>
+					<div class="review-content" id="review-content-${iterStat.count}">
+						<p th:text="${review.text}"></p>
+						<p th:text="'작성자 - ' + ${review.reviewer}"></p>
+						<p th:text="'등록일 - ' + ${review.date}"></p>
+					</div>
+				</li>
+			</ul>
+			<div class="pagination">
+				<span th:if="${reviewPage.hasPrevious()}"> <a
+					th:href="@{'/my/productDetail/' + ${productId} + '?page=' + ${reviewPageNumber - 1}}">이전</a>
+				</span> <span
+					th:each="pageNumber : ${#numbers.sequence(1, reviewPage.totalPages)}">
+					<a
+					th:href="@{'/my/productDetail/' + ${productId} + '?page=' + ${pageNumber}}"
+					th:text="${pageNumber}"></a>
+				</span> <span th:if="${reviewPage.hasNext()}"> <a
+					th:href="@{'/my/productDetail/' + ${productId} + '?page=' + ${reviewPageNumber +1}}">다음</a>
+				</span>
+			</div>
+
+			
+		</div>
+
+
+
+		<button class="submit-button" onclick="toggleReviewInput()">리뷰
+			작성</button>
+		<div class="review-form" style="display: none;">
+			<h2>리뷰 작성</h2>
+			<form
+				th:action="@{'/my/productDetail/' + ${productId} + '/addReview'}"
+				method="post">
+				<label for="reviewTitle">리뷰 제목</label> <input type="text"
+					id="reviewTitle" name="reviewTitle" required> <label
+					for="reviewText">리뷰 내용</label>
+				<textarea id="reviewText" name="reviewText" required></textarea>
+				<!-- productId를 숨겨진 필드로 전달 -->
+				<input type="hidden" name="productId" th:value="${productId}">
+				<button class="submit-button" type="submit">리뷰 등록</button>
+			</form>
+		</div>
+
+
+
+
+
+
+	</div>
+</body>
+<!-- 리뷰 토글 스크립트 -->
+<script>
+	/* 토글 함수 정의 */
+	function toggleSection(sectionId) {
+		var section = document.getElementById(sectionId);
+		if (section.style.display === "none" || section.style.display === "") {
+			section.style.display = "block";
+		} else {
+			section.style.display = "none";
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		const reviewTitleElements = document.querySelectorAll('.review-title');
+
+		reviewTitleElements.forEach(function(titleElement, index) {
+			const contentElement = document.getElementById('review-content-'
+					+ index);
+			titleElement.addEventListener("click", function() {
+				if (contentElement.style.display === "none"
+						|| contentElement.style.display === "") {
+					contentElement.style.display = "block";
+				} else {
+					contentElement.style.display = "none";
+				}
+			});
+		});
+	});
+</script>
+
+<script th:inline="javascript">
+	function toggleReviewInput() {
+		var reviewForm = document.querySelector('.review-form');
+		if (reviewForm.style.display === 'none'
+				|| reviewForm.style.display === '') {
+			reviewForm.style.display = 'block';
+		} else {
+			reviewForm.style.display = 'none';
+		}
+	}
+</script>
+<script th:inline="javascript">
+	/* 모델로부터 dtoObject를 JavaScript 변수로 가져오기 */
+	var dtoObject = /*[[${dto}]]*/null;
+</script>
+<script>
+	var reviewButton = document.querySelector('.submit-button');
+	reviewButton.addEventListener("click", function() {
+		if (dtoObject == null) {
+			alert("로그인 후 이용해주세요.");
+			window.location.href = '/view/login';
+		}
+	});
+</script>
+
+
+</html>

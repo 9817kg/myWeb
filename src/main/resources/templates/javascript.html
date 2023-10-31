@@ -55,12 +55,10 @@ li img {
 }
 </style>
 <body>
-    <div
-		th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
-	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+    <div th:replace="${dto != null ? (dto.provider == '일반가입' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
     <h1>Online Store</h1>
   
-    <div>
+    
     <ul>
         <li th:each="item, iterStat : ${list}">
             <!-- provider, title, date를 가져와서 표시 -->
@@ -73,20 +71,19 @@ li img {
                 <p th:text="'Date: ' + ${item.date}"></p>
            
         </li>
-        
     </ul>
     <div class="pagination">
-    <span th:if="${reviewPage.hasPrevious()}">
-        <a th:href="@{'/my/java?page=' + ${reviewPageNumber - 1}}">이전</a>
-    </span>
-    <span th:each="pageNumber : ${#numbers.sequence(1, reviewPage.totalPages)}">
-        <a th:href="@{'/my/java?page=' + ${pageNumber}}" th:text="${pageNumber}"></a>
-    </span>
-    <span th:if="${reviewPage.hasNext()}">
-        <a th:href="@{'/my/java?page=' + ${reviewPageNumber + 1}}">다음</a>
-    </span>
-</div>
-
+				<span th:if="${reviewPage.hasPrevious()}"> <a
+					th:href="@{'/my/javascript?page=' + ${reviewPageNumber - 1}}">이전</a>
+				</span> <span
+					th:each="pageNumber : ${#numbers.sequence(1, reviewPage.totalPages)}">
+					<a
+					th:href="@{'/my/javascript?page=' + ${pageNumber}}"
+					th:text="${pageNumber}"></a>
+				</span> <span th:if="${reviewPage.hasNext()}"> <a
+					th:href="@{'/my/javascript?page=' + ${reviewPageNumber +1}}">다음</a>
+				</span>
+			</div>
     <a th:href="@{/my/addProduct}" style="display: block; margin-top: 20px;">상품 등록하러 가기</a>
 </body>
 </html>

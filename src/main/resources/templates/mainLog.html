@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE,edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홈페이지</title>
+<link
+    href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap"
+    rel="stylesheet">
+<style type="text/css">
+    /* 테이블 스타일 */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid red;
+    }
+     .wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+         background-image: url(/test.jpg); /* 이미지 파일의 경로를 적절히 수정해주세요 */
+        background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+        background-attachment: fixed; /* 스크롤 시 배경 이미지 고정 여부 (선택사항) */
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* 버튼 스타일 */
+    .custom-button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+    }
+
+    header {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        height: 40px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .menu-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 100px;
+    }
+
+    .menu-left, .menu-right {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .menu-item {
+        margin-right: 20px;
+        position: relative;
+    }
+
+    .menu-item .sub-menu {
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        z-index: 1;
+    }
+
+    .back.active {
+        display: block;
+    }
+
+    .front.active {
+        display: block;
+    }
+
+    /* 링크 스타일 */
+    a {
+        color: gray;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    /* 메뉴 항목 호버 시 스타일 변경 */
+    .menu-item:hover a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    /* 기본 메뉴 항목 스타일 */
+    .menu-item a {
+        color: gray;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    /* 메뉴 아이템 호버 시 글자 색상 변경 및 밑줄 표시 */
+    .menu-item:hover a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    /* 서브 메뉴 항목 스타일 */
+    .sub-menu a {
+        color: gray;
+        text-decoration: none !important;
+        font-size: 12px;
+        transition: text-decoration 0.3s;
+        display: block;
+        white-space: nowrap;
+    }
+
+    /* 서브 메뉴 아이템 호버 시 밑줄 표시 */
+    .sub-menu a:hover {
+        text-decoration: underline;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .search-input {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .search-button {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    	color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    /* 메인 컨텐츠 스타일 */
+    .main-content {
+        flex: 1; /* 메인 컨텐츠 가로 확장 */
+    }
+    .w-btn-gra2 {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    color: white;
+}
+.body{
+background-color: F4F3EA; 
+}
+    
+
+    .board-list {
+        font-weight: bold;
+        font-style: inherit;
+    }
+    .reviewInputArea{
+    margin-bottom :100px; 
+    }
+</style>
+    <!-- <script src="/js/menu.js"></script> -->
+    
+</head>
+<body>
+     <div th:replace="header2.html"></div>
+     <div th:replace="afterSidebar.html"></div>
+
+   <div class="wrapper">
+        <div class="board-list">
+            
+        </div>
+        
+
+       <!--  <div id="reviewInputArea" class="reviewInputArea">
+            <form th:action="@{/addQnA}" method="post" class="form"
+                style="display: none;">
+                <input type="text" name="text" placeholder="QnA 제목"
+                    class="review-input">
+                <textarea name="content" placeholder="Q & A 내용"
+                    class="review-input review-input2"
+                    style="display: block; width: 500px; height: 100px;"></textarea>
+                <div class="buttons">
+                    <button type="submit" class="b2">작성 완료</button>
+                    <button type="button" id="cancelReviewInput" class="b2"
+                        onclick="toggleReviewInput()">취소</button>
+                </div>
+            </form>
+        </div> -->
+        
+    </div>
+    <div th:replace="footer.html"></div>
+    <script th:inline="javascript">
+        /* Thymeleaf 변수를 JavaScript 변수로 가져오기 */
+        var message = /*[[${param.message}]]*/ '';
+        var type = /*[[${type}]]*/ ''; // 이 부분에서 'type' 값을 가져옵니다
+
+        $(document).ready(function() {
+            // 로그인 성공 또는 실패 메시지를 가져와서 표시
+            if (message[0] === '탈퇴완료') {
+                alert("회원탈퇴가 정상적으로 처리되었습니다.");
+            }
+            updateFormVisibility(); // 초기 가시성 업데이트
+        });
+        
+        function redirectToCommunity() {
+            // 페이지를 '/my/community'로 이동
+            window.location.href = '/my/community';
+        }
+        
+        
+        
+
+       /*  // "QnA 등록" 버튼 클릭 이벤트 처리
+        document.getElementById("qnaButton").addEventListener("click", function() {
+            // "QnA 등록" 버튼 클릭 시 "reviewInputArea"를 나타나게 합니다.
+            toggleReviewInput();
+        }); */
+
+        function updateFormVisibility() {
+            var qnaButton = document.getElementById('qnaButton');
+            var reviewInputArea = document.getElementById('reviewInputArea');
+
+            if (type === 'qna') {
+                qnaButton.style.display = 'block';
+            } else {
+                qnaButton.style.display = 'none';
+            }
+        }
+
+       /*  function toggleReviewInput() {
+            var reviewInputArea = document.getElementById("reviewInputArea");
+            var reviewInput = document.querySelector(".review-input");
+            var cancelReviewInput = document.getElementById("cancelReviewInput");
+
+            if (reviewInputArea.style.display === "none" || reviewInputArea.style.display === "") {
+                reviewInputArea.style.display = "block";
+                reviewInput.style.display = "block";
+                cancelReviewInput.style.display = "block";
+            } else {
+                reviewInputArea.style.display = "none";
+                reviewInput.style.display = "none";
+                cancelReviewInput.style.display = "none";
+            }
+        } */
+    </script>
+</body>
+</html>
