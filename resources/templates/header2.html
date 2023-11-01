@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>menu header</title>
+<style>
+/* 기본 스타일 */
+ /* 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-button {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    		color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+.search {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	overflow: auto;
+}
+
+header {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	height: 40px;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1000;
+}
+
+.menu-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 100px;
+}
+
+.menu-left, .menu-right {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+}
+
+.menu-item {
+	margin-right: 20px;
+	position: relative;
+}
+
+.menu-item .sub-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	padding: 10px;
+	z-index: 1;
+}
+
+.menu-item:hover .sub-menu {
+	display: block;
+}
+
+/* 링크 스타일 */
+a {
+	color: gray;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+/* 메뉴 항목 호버 시 스타일 변경 */
+.menu-item a:hover {
+	color: white; /* Change text color to white */
+	background-color: black; /* Change background color to black */
+	text-decoration: none; /* Remove underline */
+}
+
+/* 기본 메뉴 항목 스타일 */
+.menu-item a {
+	color: gray;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+/* 메뉴 아이템 호버 시 글자 색상 변경 및 밑줄 표시 
+.menu-item:hover a {
+	color: white; 
+	background-color: black; 
+	text-decoration: none; 
+}
+*/
+
+/* 로고 스타일 */
+.logo {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 10px 0;
+	text-align: center;
+}
+
+.logo img {
+	width: 120px;
+	height: auto;
+	margin-bottom: 0;
+}
+
+
+/* 서브 메뉴 항목 스타일 */
+.sub-menu a {
+	color: gray;
+	text-decoration: none !important;
+	font-size: 12px;
+	transition: text-decoration 0.3s;
+	display: block;
+	white-space: nowrap;
+	background-color: white; /* Initial background color */
+}
+
+/* 서브 메뉴 아이템 호버 시 스타일 변경 */
+.sub-menu a:hover {
+	background-color: black; /* Change background color to black */
+	color: white; /* Change text color to white */
+	text-decoration: none; /* Remove underline */
+}
+.search-container {
+ margin : 0px;
+}
+
+.search-input {
+	width: 400px;
+	height: 30px;
+	padding: 0px;
+	
+}
+
+.search-button {
+	height: 30px;
+	padding: 5px 20px 5px 20px;
+	text-align: 10px;
+	background-color: black;
+	color: white;
+}
+</style>
+</head>
+<body class="search">
+	<header>
+		<div class="menu-container">
+			<div class="logo">
+				<a href="/my/main"> <img src="/logo.png" alt="로고">
+				</a>
+			</div>
+			<div class="menu-left">
+
+				<div class="menu-item">
+					<a href="/my/community">Community</a>
+					<div class="sub-menu">
+						<a href="/my/notice">Notice</a> 
+							<a href="/my/qna?type=qna">Q & A</a>
+					</div> 
+					</div>
+
+				<div class="menu-item">
+					<a>BackEnd</a>
+					<div class="sub-menu">
+						<a href="/my/java">Java</a> <a href="/my/python">Python</a> <a
+							href="/my/springboot">spring boot</a>
+
+					</div>
+				</div>
+
+				<div class="menu-item">
+					<a>FrontEnd</a>
+					<div class="sub-menu">
+						<a href="/my/javascript">javaScript</a> <a href="/my/hs">html/css</a>
+						<a href="/my/react">react</a>
+
+					</div>
+				</div>
+
+
+			
+			</div>
+			
+			<!-- 검색창 스타일 -->
+			<div class="search-container">
+				<form action="/my/search" method="post">
+					<select name="type">
+						<option selected value="">검색 내용 선택</option>
+						<option value="title">제목</option>
+						<option value="category">카테고리</option>
+						<option value="provider">작성자</option>
+						<!-- 다른 옵션들도 추가할 수 있음 -->
+					</select> <input type="text" class="search-input" name="search"
+						placeholder="검색어를 입력하세요">
+					<button class="search-button" type="submit">검색</button>
+				</form>
+			</div>
+
+
+			<div class="menu-right">
+				<div class="menu-item">
+					<a href="#"
+						onclick="document.getElementById('logout-form').submit();">LogOut
+					</a>
+					<form id="logout-form" action="/logout" method="POST"></form>
+				</div>
+				<div class="menu-item">
+					<a href="/view/join">Join</a>
+				</div>
+
+				<div class="menu-item">
+					<a href="/my/cart">Cart</a>
+				</div>
+
+				<div class="menu-item">
+					<!--화면 우측 상단에 로그인 시 userName 출력  -->
+					<div th:if="${dto.name != null}">
+						<a href="/info/mypage2"><span id="welcome"
+							th:text="'환영합니다 ' + ${dto.name} + ' 님!'"></span></a>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		
+	</header>
+	<script>
+		function searchFunction() {
+			var searchQuery = document.getElementById("search").value;
+			if (searchQuery.trim() !== "") {
+				// 검색어를 사용하여 검색 로직을 추가
+				// 여기에 검색 결과를 표시하거나 검색 페이지로 리다이렉트할 수 있습니다.
+				alert("검색어: " + searchQuery);
+			} else {
+				alert("검색어를 입력하세요.");
+			}
+		}
+	</script>
+</body>
+</html>
