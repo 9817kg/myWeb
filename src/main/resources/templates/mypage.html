@@ -90,6 +90,8 @@ section a:hover {
 </head>
 <body>
 	<div th:replace="header2.html"></div>
+	 <div th:if="${dto.membertype == 'teacher'}" th:replace="teacherSidebar.html"></div>
+	<div th:unless="${dto.membertype == 'teacher'}" th:replace="afterSidebar.html"></div>
 	<main>
 		<!-- 섹션 1: 회원 정보 -->
 		<section class="user-info" id="section1">

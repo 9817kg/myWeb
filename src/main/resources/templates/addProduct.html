@@ -61,7 +61,7 @@ label {
 <body style="padding-top: 60px;">
 	<div
 		th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
-	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+	
 	
 	<h1>상품 등록</h1>
 

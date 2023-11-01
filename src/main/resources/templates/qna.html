@@ -431,9 +431,8 @@ tbody tr:hover {
 <script src="/js/menu.js"></script>
 </head>
 <body>
-	<div
-		th:replace="${dto != null ? (dto.provider == '일반가입' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
-	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+	<div th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
+	<div th:replace="${dto != null} ? (${dto.memberType == 'teacher'} ? 'teacherSidebar.html' : 'afterSidebar.html') : 'sidebar.html'"></div>
 
 	<div class="board-list">
 		<a href="/my/qna?type=inquiry" class="list1">강사 1:1 문의</a> <a
@@ -443,12 +442,12 @@ tbody tr:hover {
 	</div>
 <div class="button-area">
 			<button class="w-btn w-btn-gra2" id="qnaButton"
-				th:if="${type == 'inquiry'}" onclick="redirectToCommunity();">1
+				th:if="${type == 'inquiry'}" onclick="writeonByone();">1
 				: 1 문의 신청</button>
 		</div>
 		<div class="button-area">
 			<button class="w-btn w-btn-gra2" id="qnaButton"
-				th:if="${type == 'qna'}" onclick="redirectToCommunity();">질문게시판 작성하기
+				th:if="${type == 'qna'}" onclick="wirteQna();">질문게시판 작성하기
 				</button>
 		</div>
 	<div class="qna-board">
@@ -462,8 +461,9 @@ tbody tr:hover {
 					<th scope="col">작성일</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:each="item : ${data}">
+			<tbody th:each="item : ${data}">
+				<tr th:attr="data-href=@{/my/readBoard/{type}/{id}(type=${item.type}, id=${item.id})}" onclick="goToLink(this.getAttribute('data-href'))">
+				
 					<td  th:text="${item.id}"></td>
 					<td th:text="${item.title}"></td>
 					<td th:text="${item.author}"></td>
@@ -491,5 +491,21 @@ tbody tr:hover {
 <footer>
 	 <div th:replace="footer.html"></div>
 </footer>
+<script>
+    function wirteQna() {
+        window.location.href = '/my/writeQna'; // 여기에 원하는 URL을 넣어주세요
+    }
+</script>
+<script>
+    function writeonByone() {
+        window.location.href = '/my/writeInquiry'; // 여기에 원하는 URL을 넣어주세요
+    }
+    
+    function goToLink(link) {
+        window.location.href = link;
+    }
+</script>
+
+
 </body>
 </html>

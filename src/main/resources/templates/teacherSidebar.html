@@ -16,7 +16,7 @@
 	display: block;
 	overflow: hidden;
 	width: 200px;
-	 background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     color: white;
 	transition: all 0.5s ease;
 	border-radius: 20px;
@@ -118,39 +118,12 @@
     <ul>
         <li><a href="/info/mypage2" class="item1"><div>내 정보</div></a></li>
         <li><a href="/my/cart" class="item2"><div>장바구니</div></a></li>
-        
-        
-       
-        
-          
+         <li><a href="/my/addProduct" class="item3"><div>상품 등록</div></a></li>
     </ul>
 </div>
 
-<script>
-    var myPageMenuItem = document.querySelector('.item1');
-    myPageMenuItem.addEventListener('click', function(event) {
-        event.preventDefault(); // 링크 클릭 기본 동작 방지
 
-        // 알림 표시
-        alert("로그인 후 이용 가능합니다. 로그인 페이지로 이동합니다.");
 
-        // 로그인 페이지로 이동
-        window.location.href = "/view/login"; // 로그인 페이지 URL로 이동
-    });
-</script>
-
-<script>
-    var cartMenuItem = document.querySelector('.item2');
-    cartMenuItem.addEventListener('click', function(event) {
-        event.preventDefault(); // 링크 클릭 기본 동작 방지
-
-        // 알림 표시
-        alert("로그인 후 이용 가능합니다. 로그인 페이지로 이동합니다.");
-
-        // 로그인 페이지로 이동
-        window.location.href = "/view/login"; // 로그인 페이지 URL로 이동
-    });
-</script>
 </body>
 
 </html>

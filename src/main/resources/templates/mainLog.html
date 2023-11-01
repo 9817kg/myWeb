@@ -197,7 +197,7 @@ background-color: F4F3EA;
 </head>
 <body>
      <div th:replace="header2.html"></div>
-     <div th:replace="afterSidebar.html"></div>
+    <div th:replace="${dto != null} ? (${dto.memberType == 'teacher'} ? 'teacherSidebar.html' : 'afterSidebar.html') : 'sidebar.html'"></div>
 
    <div class="wrapper">
         <div class="board-list">

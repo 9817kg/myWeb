@@ -57,7 +57,8 @@ li img {
 <body>
     <div
 		th:replace="${dto != null ? (dto.provider == '일반회원' ? 'header2.html' : (dto.provider == 'kakao' || dto.provider == 'naver' || dto.provider == 'google' ? 'header3.html' : 'header.html')) : 'header.html'}"></div>
-	<div th:replace="${dto != null ? 'afterSidebar.html' : 'sidebar.html'}"></div>
+	<div th:replace="${dto != null} ? (${dto.memberType == 'teacher'} ? 'teacherSidebar.html' : 'afterSidebar.html') : 'sidebar.html'"></div>
+
     <h1>Online Store</h1>
   
     <div>
@@ -87,6 +88,8 @@ li img {
     </span>
 </div>
 
-    <a th:href="@{/my/addProduct}" style="display: block; margin-top: 20px;">상품 등록하러 가기</a>
+    <div th:if="${dto != null && dto.memberType == 'teacher' }">
+        <a th:href="@{/my/addProduct}" style="display: block; margin-top: 20px;">상품 등록하러 가기</a>
+    </div>
 </body>
 </html>

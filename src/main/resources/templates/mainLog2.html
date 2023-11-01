@@ -198,7 +198,8 @@ background-color: F4F3EA;
 </head>
 <body>
 	<div th:replace="header3.html"></div>
-	<div th:replace="afterSidebar.html"></div>
+	 <div th:if="${dto.membertype == 'teacher'}" th:replace="teacherSidebar.html"></div>
+	<div th:unless="${dto.membertype == 'teacher'}" th:replace="afterSidebar.html"></div>
 	<div class="wrapper">
         <div class="board-list">
             <a href="/my/notice" class="list1">Notice</a>&emsp;|&emsp;<a
