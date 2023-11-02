@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 정보 표시 폼</title>
+    <style>
+      
+       
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+        	margin-top:150px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .myInfo{
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .select-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        select {
+            width: 30%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    
+    </style>
+</head>
+<body>
+	<div th:replace="${dto.provider == '일반가입' ? 'header2.html' : 'header3.html'}"></div>
+	
+    <div class="user-info-form">
+    <h2>회원 정보</h2>
+    
+    <!-- 폼 시작 -->
+    <form th:action="@{/info/changTeacher}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+    		<div class="form-group">
+            <label >프로필</label>
+             <img th:src="'/' + ${dto.profile}" alt="프로필 이미지"><br>
+        </div>
+          
+
+        </div>
+         <label for="img">프로필 업로드</label>
+			<input id="upLoad" name="upLoad" type="file" multiple="multiple">
+          
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input class="myInfo" type="text" id="name" name="name" th:value="${dto.name}" >
+        </div>
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input class="myInfo" type="text" id="email" name="email" th:value="${dto.email}" >
+        </div>
+        
+        
+         <div class="form-group">
+            <label for="name">경력</label>
+            <input class="myInfo" type="text" id="career" name="career" th:value="${dto.career}" readonly>
+        </div>
+         <div class="form-group">
+            <label for="name">강사소개</label>
+            <input class="myInfo" type="text" id="intro" name="intro" th:value="${dto.introduce}" readonly>
+        </div>
+         <button class="uploadBtn" type="submit">프로필 등록완료</button>
+        
+    </form>
+    <!-- 폼 종료 -->
+</div>
+
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script>
+	$('.uploadBtn').click(() => {
+        let formData = new FormData();
+        let inputFile = $('input[name="upFiles"]');
+        let files = inputFile[0].files;
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append("upFiles", files[i]);
+        }
+
+        $.ajax({
+            url: '/uploadajax',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'post',
+            dataType: 'json',
+            success: (result) => {
+                showUploadImg(result);
+                console.log("서버의 업로드 처리 결과: " + result);
+            },
+            error: (result) => {
+                console.log("업로드 실패!\n예외내용: " + result);
+            }
+        });
+    });
+
+    function showUploadImg(arr) {
+        console.log(arr);
+        let div = $('.uploadResult');
+        for (let i = 0; i < arr.length; i++) {
+            div.append("<img src='/display?fileName=" + arr[i].imageURL + "'>");
+        }
+    }
+   </script>
+
+</body>
+</html>
