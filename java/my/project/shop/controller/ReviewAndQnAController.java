@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import my.project.shop.dtos.MemberJoinDto;
 import my.project.shop.dtos.QnAReviewDto;
 import my.project.shop.dtos.ReadDTO;
@@ -36,7 +38,8 @@ import my.project.shop.service.QnAService;
 import my.project.shop.service.ReviewService;
 
 @Controller
-@RequestMapping("my")
+@RequestMapping("/my")
+@RequiredArgsConstructor
 public class ReviewAndQnAController {
 	@Autowired
 	private InquiryService inquiryService;
@@ -46,7 +49,7 @@ public class ReviewAndQnAController {
 	private InquiryRepository inquiryRepository;
 	@Autowired
 	private QnARepository qnARepository;
-
+	   private final NoticeService noticeService;
 	@GetMapping("/qna")
 	public String getMainPage(@RequestParam(name = "type", required = false) String type,
 			@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpSession session) {
@@ -302,4 +305,79 @@ public class ReviewAndQnAController {
 			
 		return "readBoard";
 	}
+	
+	 @GetMapping("/notice")
+		public String notice(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpSession session) {
+			int pageSize = 6; // 페이지당 리뷰 수
+
+			Object dtoObject = session.getAttribute("dto");
+			if (dtoObject instanceof MemberJoinDto) {
+				MemberJoinDto dto = (MemberJoinDto) dtoObject;
+				model.addAttribute("dto", dto);
+
+				List<Notice> noticeList = noticeService.getAllNotices();
+				Page<Notice> noticePage = noticeService.getNoticeByPage(page, pageSize);
+				model.addAttribute("PageNumber", noticePage.getNumber() + 1);
+				model.addAttribute("Page", noticePage);
+
+				model.addAttribute("data", noticeList);
+
+			} else if (dtoObject instanceof UserProfile) {
+				UserProfile userProfile = (UserProfile) dtoObject;
+				model.addAttribute("dto", userProfile);
+
+				List<Notice> noticeList = noticeService.getAllNotices();
+				Page<Notice> noticePage = noticeService.getNoticeByPage(page, pageSize);
+				model.addAttribute("PageNumber", noticePage.getNumber() + 1);
+				model.addAttribute("Page", noticePage);
+
+				model.addAttribute("data", noticeList);
+
+			} else {
+
+				List<Notice> noticeList = noticeService.getAllNotices();
+				Page<Notice> noticePage = noticeService.getNoticeByPage(page, pageSize);
+				model.addAttribute("PageNumber", noticePage.getNumber() + 1);
+				model.addAttribute("Page", noticePage);
+
+				model.addAttribute("data", noticeList);
+
+			}
+			return "notice";
+
+		}
+	 
+	 @GetMapping(value = "/readNotice/{id}")
+		public String readNotice( @PathVariable Long id,Model model, HttpSession session) {
+			Object dtoObject = session.getAttribute("dto");
+			if (dtoObject instanceof MemberJoinDto) {
+				MemberJoinDto dto = (MemberJoinDto) dtoObject;
+				model.addAttribute("dto", dto);
+				Optional<Notice> notice = noticeService.getFindId(id);
+				model.addAttribute("notice",notice);
+					
+					System.err.println(notice);
+					
+					
+				
+
+			} else if (dtoObject instanceof UserProfile) {
+				UserProfile userProfile = (UserProfile) dtoObject;
+				model.addAttribute("dto", userProfile);
+				Optional<Notice> notice = noticeService.getFindId(id);
+				model.addAttribute("notice",notice);
+					
+					System.err.println(notice);
+
+			}else {
+				Optional<Notice> notice = noticeService.getFindId(id);
+				model.addAttribute("notice",notice);
+					
+					System.err.println(notice);
+			}
+				
+			return "readNotice";
+		}
+	 
+	   
 }

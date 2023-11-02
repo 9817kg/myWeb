@@ -19,7 +19,7 @@ public class Notice {
     private String title;
     private String author;
     private String content;
-    private LocalDateTime date;
+    private String date;
 
     // 추가 필드 또는 메서드 정의 가능
 }

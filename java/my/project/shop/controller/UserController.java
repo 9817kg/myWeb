@@ -30,6 +30,7 @@ import my.project.shop.dtos.ProductSearchResultDto;
 import my.project.shop.dtos.ReviewDTO;
 
 import my.project.shop.entity.Member;
+import my.project.shop.entity.Notice;
 import my.project.shop.entity.Product;
 import my.project.shop.entity.Review;
 import my.project.shop.oauth2.UserProfile;
@@ -37,6 +38,7 @@ import my.project.shop.repository.MemberQuery;
 import my.project.shop.repository.SearchQuery;
 import my.project.shop.service.CategoryService;
 import my.project.shop.service.MemberService;
+import my.project.shop.service.NoticeService;
 import my.project.shop.service.ProductService;
 import my.project.shop.service.ReviewService;
 
@@ -52,33 +54,15 @@ public class UserController {
     private final ProductService productService;
     private final SearchQuery searchQuery;
     private ProductSearchResultDto productSearchResultDto;
+    
+ 
 
     Review review;
 
-    @GetMapping("/user_list")
-    public String user_list(HttpSession session, Model model) {
-	// 전체 회원 목록을 가져온다
-	List<Member> members = memberService.getAllMembers();
-	model.addAttribute("members", members);
-	return "user_list";
-    }
     @GetMapping("/main")
     public String main() {
 	return "main";
        }
-
-    @DeleteMapping("/deleteMember/{memberId}")
-    @ResponseBody
-    public String deleteMember(@PathVariable Long memberId) {
-	try {
-	    // 회원을 삭제하는 비즈니스 로직 수행
-	    memberService.deleteMemberById(memberId);
-	    return "success";
-	} catch (Exception e) {
-	    System.err.println("삭제 중 예외 발생 : " + e.getMessage());
-	    return "error";
-	}
-    }
 
    
 
@@ -185,21 +169,7 @@ public class UserController {
 	return "redirect:/my/search";
     }
 
-    @GetMapping("/collection")
-    public String collection(HttpSession session, Model model) {
-	Object dtoObject = session.getAttribute("dto");
-	if (dtoObject instanceof MemberJoinDto) {
-	    MemberJoinDto dto = (MemberJoinDto) dtoObject;
-	    model.addAttribute("dto", dto);
-	    return "collection";
-
-	} else if (dtoObject instanceof UserProfile) {
-	    UserProfile userProfile = (UserProfile) dtoObject;
-	    model.addAttribute("dto", userProfile);
-	    return "collection"; // online-store.html 페이지로 이동
-	}
-	return "collection";
-    }
+   
 
     @GetMapping("/cart2")
     public String cart2Page(HttpSession session, Model model) {

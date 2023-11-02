@@ -64,7 +64,7 @@ public class SpringSecurityConfig {
                             // 사용자 역할을 확인하여 조건부로 리다이렉트
                             if (authentication != null && authentication.getAuthorities().stream()
                                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                                response.sendRedirect("/view/admin"); // admin 역할을 가진 사용자
+                                response.sendRedirect("/admin/admin"); // admin 역할을 가진 사용자
                             } else {
                                 response.sendRedirect("/view/mainLog"); // 그 외의 사용자
                             }
